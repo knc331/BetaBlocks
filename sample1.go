@@ -132,7 +132,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
     // Handle different functions
     if function == "readUser" {   
-    	unmarshalUser := User{}                         //read a variable
+	    unmarshalUser := new(User)                         //read a variable
         return json.Unmarshal(t.readUser(stub, args), &unmarshalUser)
     }
     fmt.Println("query did not find func: " + function)
