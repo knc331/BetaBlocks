@@ -26,13 +26,11 @@ type  Trade struct {
     Units int
     Time time.Time
     Ordertype string
+}
 
-	}
 type TradeManager struct {
   	BuySide []Trade
 	SellSide []Trade 
-	}
-
 }
 
 
@@ -67,14 +65,13 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	Units, err = strconv.Atoi(args[2])
 	if err != nil {
 		return nil, errors.New("Expecting integer value for units")
+	}
 
-
-
-}
 //writing the user to the blockchain
 
 u1 := User{Name, Balance, Units}
-userByteArray, err := json.Marshal(u1)
+
+ userByteArray, err := json.Marshal(u1)
 	//display the input values
 	fmt.Printf("Name = %s, Balance = %d , Units = %d\n ", Name, Balance, Units)
 
@@ -87,19 +84,21 @@ userByteArray, err := json.Marshal(u1)
 
 
 	return nil, nil
+
 }
 
 
 
 
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+
 	fmt.Println("invoke is running " + function)
 
     // Handle different functions
     if function == "init" {
         return t.Init(stub, "init", args)
-    } else if function =="tradeManager" {
-    	return t.tradeManager(stub,"tradeManager",args)
+    } else if function =="tradeManagerFunction" {
+    	return t.tradeManagerFunction(stub,args)
     }
 
    /*else if function == "placeOrder" {
@@ -121,12 +120,12 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
     // Handle different functions
     if function == "readUser" {
-	   unmarshalUser := new(User)                         //read a variable
-	    //return t.readUser(stub, args)
-        return json.Unmarshal(t.readUser(stub, args), &unmarshalUser)
+	  //var unmarshalUser User                         //read a variable
+	    return t.readUser(stub, args)
+        //return json.Unmarshal(t.readUser(stub, args), &unmarshalUser)
     } else if function == "readTradeManager" {
-    	unmarshalTradeManager:= new(TradeManager)
-    	return json.Unmarshal(t.tradeManager(stub,"readTradeManger",args), &unmarshalTradeManager)
+    	//unmarshalTradeManager:= new(TradeManager)
+    	return t.readTradeManager(stub,args)
 
     }
     fmt.Println("query did not find func: " + function)
@@ -139,7 +138,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 func (t *SimpleChaincode) readUser(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, jsonResp string
 	var err error
-
+	//var unmarshalUser User
     if len(args) != 1 {
         return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
     }
@@ -149,15 +148,17 @@ func (t *SimpleChaincode) readUser(stub shim.ChaincodeStubInterface, args []stri
     if err != nil {
         jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
         return nil, errors.New(jsonResp)
-    }
-
+    } /*else {
+    	json.Unmarshal(valAsbytes,&unmarshalUser)
+    }*/
+	fmt.Println("unmarshalUser " + string(valAsbytes))
     return valAsbytes, nil
 }
 
 // Reading the OrderManager ...called by Query
-func (t *SimpleChaincode) tradeManager(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) tradeManagerFunction(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	
-	var Name, Ordertype string
+	var Name, Ordertype, tradeManagerKey string
 	var Price, Units int
 	var Time time.Time
 	var err error
@@ -176,69 +177,53 @@ func (t *SimpleChaincode) tradeManager(stub shim.ChaincodeStubInterface, args []
 	Units, err = strconv.Atoi(args[2])
 	if err != nil {
 		return nil, errors.New("Expecting integer value for units")
-	Time = t := time.Now()
+	}
+
+	Time = time.Now()
 	Ordertype = args[3]
 	tradeManagerKey = args[4]
 
 
-	trade := Trade{Name, Price, Units, Time, Ordertype}
-	tradeManager.BuySide=append(trade)
-
+	trade := Trade {Name, Price, Units, Time, Ordertype}
+	var tradeArray []Trade;
+	tradeArray = append(tradeArray, trade); 
+	tradeManager.BuySide=tradeArray;
 	tradeManagerByteArray, err := json.Marshal(tradeManager)
 	// Write the state to the ledger
-	err = stub.PutState(Name, tradeManagerByteArray)
+	err = stub.PutState(tradeManagerKey, tradeManagerByteArray)
 	if err != nil {
 		return nil, err
 	}
+
 	return nil, nil
 
-/*	// Read Trade Manager
-
-	TradeManager, err := stub.GetState(TradeManagerKey)
-
-
-	 if err != nil {
-        jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
-        return nil, errors.New(jsonResp)
-    }
-	//display the input values
-	fmt.Printf("Name = %s, Balance = %d , Units = %d\n ", Name, Balance, Units)
-	if Ordertype=="buy" {
-		// Write the state to the ledger
-		err = stub.PutState(TradeManagerKey, userByteArray)
-		if err != nil {
-		return nil, err
-		}
-
-	} else if function =="sell"{
-		// Write the state to the ledger
-		err = stub.PutState(TradeManagerKey, userByteArray)
-		if err != nil {
-		return nil, err
-	}
-	
-
-
-    return valAsbytes, nil*/
 }
 
 // Reading the Trades 
 func (t *SimpleChaincode) readTradeManager (stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, jsonResp string
 	var err error
-	var tradeManager TradeManager
+	var tradeManager []byte
+	var unmarshalTradeManager TradeManager
 
     if len(args) != 1 {
         return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
     }
 
     key = args[0]
-    tradeManager, err := stub.GetState(key)
+    tradeManager, err = stub.GetState(key)
     if err != nil {
         jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
         return nil, errors.New(jsonResp)
+    } else{
+    	json.Unmarshal(tradeManager,&unmarshalTradeManager)
     }
-
+    output,err :=  json.Marshal(unmarshalTradeManager.BuySide)
+    if err != nil {
+        //jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+        return nil, err
+    }
+    fmt.Println("unmarshalTradeManager " + string(output))    
     return tradeManager, nil
 }
 
