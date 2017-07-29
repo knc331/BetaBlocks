@@ -59,3 +59,32 @@ POST requests
 
 
 https://2f5cb48838c14818b8f38c7bb6fdf964-vp0.us.blockchain.ibm.com:5002/chaincode
+
+
+Registration
+
+POST URL: https://2f5cb48838c14818b8f38c7bb6fdf964-vp0.us.blockchain.ibm.com:5002/registrar
+{
+  "enrollId": "user_type1_2",
+  "enrollSecret": "ab9917e45e"
+}
+
+
+user_type1_1
+
+966a5cff38
+
+
+user_type1_2
+
+ab9917e45e
+
+
+user_type1_3
+
+67e3b9a539
+
+
+user_type1_4
+
+5359354869
