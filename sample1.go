@@ -1,5 +1,12 @@
-import ( time
+package main
 
+import (
+ 	"errors"
+	"fmt"
+	"strconv"
+	"time"
+    "encoding/json"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
 // SimpleChaincode example simple Chaincode implementation
@@ -8,29 +15,29 @@ type SimpleChaincode struct {
 
 type User struct {
     Name string
-	Balance int64 `json:"balance,string"`
-    Units int64 `json:"units,string"`
-    
-}	
+	Balance int `json:"balance,string"`
+    Units int `json:"units,string"`
+
+}
 
 type TradeManager struct {
     BuySide []struct {
     Name string
-    Price int64
-    Units int64
+    Price int
+    Units int
     Time time.Time
-    
-	}	
+
+	}
 
 	SellSide []struct {
     Name string
-    Price int64
-    Units int64
+    Price int
+    Units int
     Time time.Time
-	}	
+	}
 
 
-}	
+}
 
 
 func main() {
@@ -44,12 +51,14 @@ func main() {
 
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Printf("Init called, initializing chaincode")
-	
+
 	//var user_A, buy_user_B, user_C, user_D string    // Entities
 	//var Aval, Bval, Cval, Dval int // Asset holdings
+	var Name string
+	var Balance, Units int
 	var err error
 
-	if len(args) != 1 {
+	if len(args) != 3 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 4")
 	}
 
@@ -62,12 +71,12 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	Units, err = strconv.Atoi(args[2])
 	if err != nil {
 		return nil, errors.New("Expecting integer value for buyer A ")
-	}
+}
 
 
 u1 := User{Name, Balance, Units}
 userByteArray, err := json.Marshal(u1)
-	//display the input values 
+	//display the input values
 	fmt.Printf("Name = %s, Balance = %d , Units = %d\n ", Name, Balance, Units)
 
 	// Write the state to the ledger
@@ -111,7 +120,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     // Handle different functions
     if function == "init" {
         return t.Init(stub, "init", args)
-    } 
+    }
 
    /*else if function == "placeOrder" {
         return t.placeOrder(stub, args)
@@ -131,7 +140,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	fmt.Println("query is running " + function)
 
     // Handle different functions
-    if function == "readUser" {   
+    if function == "readUser" {
 	   //unmarshalUser := new(User)                         //read a variable
 	    return t.readUser(stub, args)
         //return json.Unmarshal(t.readUser(stub, args), &unmarshalUser)
