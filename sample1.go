@@ -123,8 +123,9 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	  //var unmarshalUser User                         //read a variable
 	    return t.readUser(stub, args)
         //return json.Unmarshal(t.readUser(stub, args), &unmarshalUser)
-    } else if function == "readTradeManager" {
+    }if function == "readTradeManager" {
     	//unmarshalTradeManager:= new(TradeManager)
+	    fmt.Println("inside readTradeManager")
     	return t.readTradeManager(stub,args)
 
     }
