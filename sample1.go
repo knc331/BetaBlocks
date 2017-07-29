@@ -98,7 +98,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     if function == "init" {
         return t.Init(stub, "init", args)
     } else if function =="tradeManagerFunction" {
-    	return t.tradeManagerFunction(stub,args)
+    	return t.tradeManagerFunction(stub,"tradeManagerFunction",args)
     }
 
    /*else if function == "placeOrder" {
