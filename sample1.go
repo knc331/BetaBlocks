@@ -7,6 +7,7 @@ import (
 	"time"
     "encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	//"github.com/tidwall/gjson"
 )
 
 // SimpleChaincode example simple Chaincode implementation
@@ -33,6 +34,13 @@ type TradeManager struct {
 	SellSide []Trade 
 }
 
+type Transaction struct{
+	Buyer string
+	Seller string
+	Amount int
+	Quantity int
+	Timestamp time.Time
+}
 
 func main() {
 	err := shim.Start(new(SimpleChaincode))
@@ -163,7 +171,7 @@ func (t *SimpleChaincode) tradeManagerFunction(stub shim.ChaincodeStubInterface,
 	var Price, Units int
 	var Time time.Time
 	var err error
-	var tradeManager TradeManager
+	//var tradeManager TradeManager
 
     if len(args) != 5 {
         return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
@@ -186,10 +194,36 @@ func (t *SimpleChaincode) tradeManagerFunction(stub shim.ChaincodeStubInterface,
 
 
 	trade := Trade {Name, Price, Units, Time, Ordertype}
-	var tradeArray []Trade;
-	tradeArray = append(tradeArray, trade); 
-	tradeManager.BuySide=tradeArray;
-	tradeManagerByteArray, err := json.Marshal(tradeManager)
+	
+	//readTradeManager
+	var marshalltradeMgr []byte 
+	var unmarshalltradeMgr TradeManager
+	var stringArr []string
+	stringArr = append(stringArr, "trademanager")
+	marshalltradeMgr, err = t.readTradeManager(stub, stringArr)
+	json.Unmarshal(marshalltradeMgr,&unmarshalltradeMgr)
+	if Ordertype == "buy" {
+			unmarshalltradeMgr.BuySide = append(unmarshalltradeMgr.BuySide, trade);
+	}else if Ordertype == "sell" {
+			unmarshalltradeMgr.SellSide = append(unmarshalltradeMgr.SellSide, trade);
+	}
+	//fmt.Println("unmarshalTradeManager " + gjson.Parse(json).Get("BuySide.Name"))
+
+	//check Order Type 
+	//if buy 
+	//append in buy 
+	//put state
+
+
+
+	//var tradeArray []Trade;
+	//tradeArray = append(tradeArray, trade); 
+	//tradeManager.BuySide=tradeArray;
+
+	tradeManagerByteArray, err := json.Marshal(unmarshalltradeMgr)
+
+	//tradeManagerByteArray, err := json.Marshal(tradeManager)
+	//gjson.Parse(tradeManager).Get("name").Get("last")
 	// Write the state to the ledger
 	err = stub.PutState(tradeManagerKey, tradeManagerByteArray)
 	if err != nil {
@@ -205,7 +239,7 @@ func (t *SimpleChaincode) readTradeManager (stub shim.ChaincodeStubInterface, ar
 	var key, jsonResp string
 	var err error
 	var tradeManager []byte
-	var unmarshalTradeManager TradeManager
+	//var unmarshalTradeManager TradeManager
 
     if len(args) != 1 {
         return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
@@ -216,7 +250,7 @@ func (t *SimpleChaincode) readTradeManager (stub shim.ChaincodeStubInterface, ar
     if err != nil {
         jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
         return nil, errors.New(jsonResp)
-    } else{
+    } /*else{
     	json.Unmarshal(tradeManager,&unmarshalTradeManager)
     }
     output,err :=  json.Marshal(unmarshalTradeManager.BuySide)
@@ -224,8 +258,8 @@ func (t *SimpleChaincode) readTradeManager (stub shim.ChaincodeStubInterface, ar
         //jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
         return nil, err
     }
-    fmt.Println("unmarshalTradeManager " + string(output))    
-    return tradeManager, nil
+    //fmt.Println("unmarshalTradeManager " + string(output)) */   
+    return tradeManager, nil		
 }
 
 
