@@ -339,6 +339,7 @@ func (t *SimpleChaincode) PerformSettlement (stub shim.ChaincodeStubInterface, a
 		      	transactionValue = BuySide[i].Price*BuySide[i].Units
 		      	stringArr= append(stringArr,strconv.Itoa(transactionValue))
 		      	stringArr = append(stringArr,strconv.Itoa(BuySide[i].Units))
+		      	stringArr = append(stringArr,"transactionmanager")
 		      	t.transactionManagerFunction(stub,stringArr)
 		      }
 		    }
