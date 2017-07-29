@@ -88,3 +88,26 @@ user_type1_3
 user_type1_4
 
 5359354869
+
+
+
+
+
+{
+  "jsonrpc": "2.0",
+  "method": "invoke",
+  "params": {
+    "type": 1,
+    "chaincodeID": {
+      "name": "5abf7ab5f10da3b1e6c661fed083a27f33629cbc2c03bdb98373ed10fbb688d303ef3a4cc151ccb5639d267c4bff609573d4c795afceaf91d71c51e956d4b7a1"
+    },
+    "ctorMsg": {
+      "function": "tradeManagerFunction",
+      "args": [
+       	"naresh", "100", "140","sell" ,"trademanager"
+      ]
+    },
+    "secureContext": "user_type1_2"
+  },
+  "id": 1
+}
