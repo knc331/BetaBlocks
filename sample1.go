@@ -8,9 +8,9 @@ type SimpleChaincode struct {
 
 type User struct {
     Name string
-    Balance int64
-    Units int64
-    Time time.Time
+	Balance int64 `json:"balance,string"`
+    Units int64 `json:"units,string"`
+    
 }	
 
 type TradeManager struct {
@@ -18,6 +18,7 @@ type TradeManager struct {
     Name string
     Price int64
     Units int64
+    Time time.Time
     
 	}	
 
@@ -25,6 +26,7 @@ type TradeManager struct {
     Name string
     Price int64
     Units int64
+    Time time.Time
 	}	
 
 
