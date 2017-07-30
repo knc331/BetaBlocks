@@ -218,6 +218,9 @@ func (t *SimpleChaincode) tradeManagerFunction(stub shim.ChaincodeStubInterface,
 	}else if Ordertype == "sell" {
 			unmarshalltradeMgr.SellSide = append(unmarshalltradeMgr.SellSide, trade);
 	}
+
+	unmarshalltradeMgr.BuySide = qsortDescending(unmarshalltradeMgr.BuySide)
+	unmarshalltradeMgr.SellSide = qsortAscending(unmarshalltradeMgr.SellSide)
 	//fmt.Println("unmarshalTradeManager " + gjson.Parse(json).Get("BuySide.Name"))
 
 	//check Order Type 
@@ -323,8 +326,8 @@ func (t *SimpleChaincode) PerformSettlement (stub shim.ChaincodeStubInterface, a
 	BuySide = unmarshalltradeMgr.BuySide
 	SellSide = unmarshalltradeMgr.SellSide
 	
-	BuySide = qsort(BuySide)
-	SellSide = qsort(SellSide)
+	BuySide = qsortDescending(BuySide)
+	SellSide = qsortAscending(SellSide)
 
 	//perform settlement
 	for i := range BuySide {
@@ -517,7 +520,7 @@ func (t *SimpleChaincode) transactionManagerFunction(stub shim.ChaincodeStubInte
 
 
 
-func qsort(BuySide []Trade) []Trade {
+func qsortAscending(BuySide []Trade) []Trade {
 		 	 if len(BuySide) < 2 { return BuySide }
 
 		  left, right := 0, len(BuySide) - 1
@@ -540,8 +543,38 @@ func qsort(BuySide []Trade) []Trade {
 		  BuySide[left], BuySide[right] = BuySide[right], BuySide[left]
 
 		  // Go down the rabbit hole
-		  qsort(BuySide[:left])
-		  qsort(BuySide[left + 1:])
+		  qsortAscending(BuySide[:left])
+		  qsortAscending(BuySide[left + 1:])
+
+
+		  return BuySide
+	}
+
+func qsortDescending(BuySide []Trade) []Trade {
+		 	 if len(BuySide) < 2 { return BuySide }
+
+		  left, right := 0, len(BuySide) - 1
+
+		  // Pick a pivot
+		  pivotIndex := rand.Int() % len(BuySide)
+
+		  // Move the pivot to the right
+		  BuySide[pivotIndex], BuySide[right] = BuySide[right], BuySide[pivotIndex]
+
+		  // Pile elements smaller than the pivot on the left
+		  for i := range BuySide {
+		    if BuySide[i].Price > BuySide[right].Price {
+		      BuySide[i], BuySide[left] = BuySide[left], BuySide[i]
+		      left++
+		    }
+		  }
+
+		  // Place the pivot after the last smaller element
+		  BuySide[left], BuySide[right] = BuySide[right], BuySide[left]
+
+		  // Go down the rabbit hole
+		  qsortDescending(BuySide[:left])
+		  qsortDescending(BuySide[left + 1:])
 
 
 		  return BuySide
