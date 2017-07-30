@@ -111,3 +111,24 @@ user_type1_4
   },
   "id": 1
 }
+
+
+GET Transactions
+{
+  "jsonrpc": "2.0",
+  "method": "query",
+  "params": {
+    "type": 1,
+    "chaincodeID": {
+      "name": "0e9ba2032b1abde70bd993ccd90b7f5985d779fb15bbc1cb8346b1b4b94066624186434fcbcfed7acdc40933d5db4799d7f3a13f4e734204034f9e9821e32983"
+    },
+    "ctorMsg": {
+      "function": "readTransactionManager",
+      "args": [
+	  "transactionmanager"
+      ]
+    },
+    "secureContext": "user_type1_0"
+  },
+  "id": 1
+}
