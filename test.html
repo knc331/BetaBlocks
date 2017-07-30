@@ -1,0 +1,900 @@
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+ <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-charts/0.2.7/angular-charts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-charts/0.2.7/angular-charts.min.js"></script> -->
+  <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js" ></script>
+  <script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+		<script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+		ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script>
+<script type="text/javascript">	
+
+  function showhome()
+  {
+  	//alert("regform");
+  		document.getElementById("HomeDiv").style.display="block";
+  	document.getElementById("RegisterDiv").style.display="none";
+  	document.getElementById("TradeDiv").style.display="none";
+  	document.getElementById("AccountDiv").style.display="none";
+  	document.getElementById("TradeManagerDiv").style.display="none";
+  	document.getElementById("TransactionManagerDiv").style.display="none";
+  }
+ 
+  function showreg()
+  {
+  	//alert("regform");
+  	document.getElementById("HomeDiv").style.display="none";
+  	document.getElementById("RegisterDiv").style.display="block";
+  	document.getElementById("TradeDiv").style.display="none";
+  	document.getElementById("AccountDiv").style.display="none";
+  	document.getElementById("TradeManagerDiv").style.display="none";
+  	document.getElementById("TransactionManagerDiv").style.display="none";
+  }
+  
+  function showtrade()
+  {
+  	//alert("tradeform");
+  	document.getElementById("HomeDiv").style.display="none";
+  document.getElementById("RegisterDiv").style.display="none";
+  	document.getElementById("TradeDiv").style.display="block";
+  	document.getElementById("AccountDiv").style.display="none";
+  	document.getElementById("TradeManagerDiv").style.display="none";
+  	document.getElementById("TransactionManagerDiv").style.display="none";
+  }
+  function showAccount(){
+  	document.getElementById("HomeDiv").style.display="none";
+ 	document.getElementById("RegisterDiv").style.display="none";
+  	document.getElementById("TradeDiv").style.display="none";
+  	document.getElementById("AccountDiv").style.display="block";
+  	document.getElementById("TradeManagerDiv").style.display="none";
+  	document.getElementById("TransactionManagerDiv").style.display="none";
+  }
+   function showTradeManger(){
+   	document.getElementById("HomeDiv").style.display="none";
+  	document.getElementById("RegisterDiv").style.display="none";
+  	document.getElementById("TradeDiv").style.display="none";
+  	document.getElementById("AccountDiv").style.display="none";
+  	document.getElementById("TradeManagerDiv").style.display="block";
+  	document.getElementById("TransactionManagerDiv").style.display="none";
+  }
+
+   function showTransactionManager(){
+   	document.getElementById("HomeDiv").style.display="none";
+  	document.getElementById("RegisterDiv").style.display="none";
+  	document.getElementById("TradeDiv").style.display="none";
+  	document.getElementById("AccountDiv").style.display="none";
+  	document.getElementById("TradeManagerDiv").style.display="none";
+  	document.getElementById("TransactionManagerDiv").style.display="block";
+  }
+
+
+/*
+function registerUser() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML =
+      this.responseText;
+      alert(responseText);
+    }
+  };
+  xhttp.open("GET", "ajax_info.txt", true);
+  xhttp.send();
+}
+
+function getCards() {
+  performRequest('/api/pokerdeck/' + deckId + '/cards', 'GET', {
+    session_id: sessionId,
+    "_items_per_page": 100
+  }, function(data) {
+    console.log('Fetched ' + data + );
+  });
+}*/
+
+var app= angular.module("myapp", [ ]) /*
+var myConfig = {
+  "layout":"1x2",
+  "graphset":[
+    {
+      "type":"bar",
+      "plot":{
+        "background-color":"pink"
+      },
+      "series":[
+        {"values":[31,16,35,5,59,33]}
+      ]
+    },
+    {
+      "type":"pie",
+      "plot":{
+        "background-color":"pink",
+        "value-box":{
+          "placement":"out",
+          "font-color":"gray",
+          "font-size":12,
+          "font-weight":"normal"
+        }
+      },
+      "series": [
+        {
+          "values":[30],
+          "background-color":"pink"
+        },
+        {
+          "values":[34],
+          "background-color":"orange"
+        },
+        {
+          "values":[15],
+          "background-color":"green"
+        },
+        {
+          "values":[14],
+          "background-color":"gray"
+        },
+        {
+          "values":[5],
+          "background-color":"purple"
+        }
+      ]
+    }
+  ]
+};
+ 
+*/
+
+app.controller("mainController", function($scope,$http) {
+         
+   // $scope.hello="Search"; 
+    $scope.chaincode = "5abf7ab5f10da3b1e6c661fed083a27f33629cbc2c03bdb98373ed10fbb688d303ef3a4cc151ccb5639d267c4bff609573d4c795afceaf91d71c51e956d4b7a1";
+    $scope.chaincode_url="https://2f5cb48838c14818b8f38c7bb6fdf964-vp0.us.blockchain.ibm.com:5002/chaincode"
+    $scope.registrar_url=""
+    $scope.users=[{user_id:'user_type1_1',secret:'966a5cff38',name:"Pranjal"},{user_id:'user_type1_2',secret:'ab9917e45e',name:"Naresh"}];
+    $scope.ordertypes=['buy','sell'];
+    ///////////////////////////////////////////////////////
+   
+/*
+ $scope.labels = ['12am-9am', '9am-4pm', '4pm-12am'];
+  $scope.series = ['Byuers', 'Sellers'];
+
+  $scope.data = [
+    [65, 59, 80],
+    [28, 48, 40]
+  ];*/
+	//angular.module('myModule', ['chart.js']);
+    //angular.module("app", ["chart.js"]).controller("LineCtrl", function ($scope) {
+   // angular.module ( 'myApp' , [ 'zingchart-angularjs' ]);  
+
+ /* $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+  $scope.series = ['Series A', 'Series B'];
+  $scope.graphdata = [
+    [65, 59, 80, 81, 56, 55, 40],
+    [28, 48, 40, 19, 86, 27, 90]
+  ];
+  $scope.onClick = function (points, evt) {
+    console.log(points, evt);
+  };
+  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+  $scope.options = {
+    scales: {
+      yAxes: [
+        {
+          id: 'y-axis-1',
+          type: 'linear',
+          display: true,
+          position: 'left'
+        },
+        {
+          id: 'y-axis-2',
+          type: 'linear',
+          display: true,
+          position: 'right'
+        }
+      ]
+    }
+  };*/
+     
+    //////////////////////////////////////////////////////////
+    //$scope.secret_users=[]
+
+
+   /* $scope.getHits=function(){
+
+            $http.post("/asdeacdraedtaadpaids/site_hits.php").success(function(data){
+                    //alert(JSON.stringify(data));
+                    if(data.success){
+                            $scope.site_hits=data.site_hits;
+                        } else {
+                            alert("success"+data.success);
+                        }
+
+
+            });*/
+     $scope.selectUser=function(user){
+     	$scope.selectedUser=user;
+     	//alert(user.secret);
+     };
+      $scope.selectOrder=function(order){
+     	$scope.selected_order_type=order;
+     	//alert(user.secret);
+     };
+
+    $scope.deployChain=function(){
+    		$scope.users.name=$scope.Name;
+            //alert("called");
+           // $scope.registerUser();
+            data= {
+				  "jsonrpc": "2.0",
+				  "method": "deploy",
+				  "params": {
+				    "type": 1,
+				    "chaincodeID": {
+				      "path": "https://github.com/knc331/BetaBlocks"
+				    },
+				    "ctorMsg": {
+				      "function": "init",
+				      "args": [
+				        $scope.Name,$scope.Balance,$scope.Quantity
+				      ]
+				    },
+				    "secureContext": $scope.selectedUser.user_id
+				  },
+				  "id": 1
+				};
+         $http({
+            method: "POST",
+            url: $scope.chaincode_url,
+            data: data,
+            headers: {'Content-Type': 'application/json'}
+            }).then(function(data){
+           //alert(JSON.stringify(data));
+           
+              
+               alert(JSON.stringify(data));
+            
+
+        },function (error){
+
+        });
+
+    };
+
+     $scope.placeOrder=function(){
+    		$scope.users.name=$scope.Name;
+            //alert("called");
+           // $scope.registerUser();
+            data= {
+			  "jsonrpc": "2.0",
+			  "method": "invoke",
+			  "params": {
+			    "type": 1,
+			    "chaincodeID": {
+			      "name": $scope.chaincode 
+			    },
+			    "ctorMsg": {
+			      "function": "tradeManagerFunction",
+			      "args": [
+			       	$scope.users.name, $scope.Price_value, $scope.Qty_value,$scope.selected_order_type ,"trademanager"
+			      ]
+			    },
+			    "secureContext": "user_type1_2"
+			  },
+			  "id": 1
+			};
+         $http({
+            method: "POST",
+            url: $scope.chaincode_url,
+            data: data,
+            headers: {'Content-Type': 'application/json'}
+            }).then(function(data){
+           //alert(JSON.stringify(data));
+           
+              
+               alert(JSON.stringify(data));
+            
+
+        },function (error){
+
+        });
+
+    };
+
+    $scope.registerUser=function(){
+            //alert("called");
+            data= {
+			  "enrollId": $scope.selectedUser.user_id,
+			  "enrollSecret": $scope.selectedUser.secret
+			};
+         $http({
+            method: "POST",
+            url: "https://2f5cb48838c14818b8f38c7bb6fdf964-vp0.us.blockchain.ibm.com:5002/registrar",
+            data: data,
+            headers: {'Content-Type': 'application/json'}
+            }).then(function(data){
+           //alert(JSON.stringify(data));
+               alert(JSON.stringify(data));
+        },function (error){
+        	
+        });
+
+    };
+
+       $scope.readUser=function(){
+            //alert("called");
+            data= {
+			  "jsonrpc": "2.0",
+			  "method": "query",
+			  "params": {
+			    "type": 1,
+			    "chaincodeID": {
+			      "name": $scope.chaincode
+			    },
+			    "ctorMsg": {
+			      "function": "readUser",
+			      "args": [
+			       $scope.selectedUser.Name
+			       //"naresh"
+			      ]
+			    },
+			    "secureContext": $scope.selectedUser.user_id
+			  },
+			  "id": 1
+			};
+
+         $http({
+            method: "POST",
+            url: "https://2f5cb48838c14818b8f38c7bb6fdf964-vp0.us.blockchain.ibm.com:5002/chaincode",
+            data: data,
+            headers: {'Content-Type': 'application/json'}
+            }).then(function(data){
+          	alert(JSON.stringify(data.data.result));
+            	//alert(JSON.parse(data.data.result.message));
+        	$scope.get_Name = JSON.parse(data.data.result.message).Name;
+        	$scope.get_Balance =JSON.parse(data.data.result.message).balance;
+        	$scope.get_Units =JSON.parse(data.data.result.message).units;
+        	
+        	},function (error){
+        	
+        });
+
+    };
+
+
+
+     $scope.getTradeManager=function(){
+    		$scope.users.name=$scope.Name;
+            //alert("called");
+         //   $scope.registerUser();
+            data= {
+				  "jsonrpc": "2.0",
+				  "method": "query",
+				  "params": {
+				    "type": 1,
+				    "chaincodeID": {
+				      "name": $scope.chaincode
+				    },
+				    "ctorMsg": {
+				      "function": "readTradeManager",
+				      "args": [
+				        "trademanager"
+				      ]
+				    },
+				    "secureContext": "user_type1_0"
+				  },
+				  "id": 1
+				};
+         $http({
+            method: "POST",
+            url: "https://2f5cb48838c14818b8f38c7bb6fdf964-vp0.us.blockchain.ibm.com:5002/chaincode",
+            data: data,
+            headers: {'Content-Type': 'application/json'}
+            }).then(function(data){
+           alert(JSON.stringify(JSON.parse(data.data.result.message)));
+          //alert(data.data);
+         //$scope.buyers = array();
+   		$scope.buyers = (JSON.parse(data.data.result.message).BuySide);   		
+   		$scope.sellers = JSON.parse(data.data.result.message).SellSide;
+   		var buyersarray = [];
+   		var sellersarray = [];
+   		
+   		for (i = 0; i < $scope.buyers.length; i++) {
+   			buyersarray[i]=[$scope.buyers[i].Price,$scope.buyers[i].Quantity];
+   			//buyersarray[i][1]=$scope.buyers[i].Quantity
+		}
+		for (i = 0; i < $scope.buyers.length; i++) {
+   			sellersarray[i]=[$scope.sellers[i].Price,$scope.sellers[i].Quantity];
+   		}
+   			//sellersarray[i][0]=$scope.sellers[i].Quantity}
+
+   var myConfig = {
+  "type": "area",
+  "scale-x":{
+    "values":"0:200:15",
+    "format":"Quantity %v"
+  },
+  "scale-y":{
+    "values":"0:300:20",
+    "format":"%v",
+    "guide":{
+      "line-style":"dashdot"
+    }
+  },
+  "plot":{
+    "contour-on-top":false,
+    "marker":{
+      "visible":false
+    }
+  },
+  "series": [
+    {
+      "values":
+       sellersarray,
+      "line-color":"#3366ff",
+      "background-color":"#3366ff"
+    },
+    {
+      "values":
+        buyersarray,
+      "line-color":"#00cc99",
+      "background-color":"#00cc99"
+    }
+  ]
+};
+ 
+zingchart.render({ 
+	id : 'myChart', 
+	data : myConfig, 
+	height: 400, 
+	width: "100%" 
+});
+   		//alert($scope.buyers);
+   		/* $scope.myJson = {  */
+ /* type : 'line' ,  
+  series : [  
+    { values : [ 54 , 33 , 28 , 23 , 13 ] },  
+    { values : [ 10 , 15 , 16 , 20 , 40 ] }  
+  ]  
+};  
+zingchart.render({ 
+	id : 'myChart', 
+	data : myConfig, 
+	height: 400, 
+	width: "100%" 
+});*/
+        },function (error){
+
+        });
+
+    };
+
+ $scope.getTransactionManager=function(){
+    		$scope.users.name=$scope.Name;
+            //alert("called");
+         //   $scope.registerUser();
+            data= {
+				  "jsonrpc": "2.0",
+				  "method": "query",
+				  "params": {
+				    "type": 1,
+				    "chaincodeID": {
+				      "name": ""
+				    },
+				    "ctorMsg": {
+				      "function": "readTransactionManager",
+				      "args": [
+				        "transactionmanager"
+				      ]
+				    },
+				    "secureContext": "user_type1_1"
+				  },
+				  "id": 1
+				};
+         $http({
+            method: "POST",
+            url: "https://2f5cb48838c14818b8f38c7bb6fdf964-vp0.us.blockchain.ibm.com:5002/chaincode",
+            data: data,
+            headers: {'Content-Type': 'application/json'}
+            }).then(function(data){
+           alert(JSON.stringify(JSON.parse(data.data.result.message)));
+          //alert(data.data);
+         //$scope.buyers = array();
+   		$scope.transactions = (JSON.parse(data.data.result.message).Transactions);
+   		
+        },function (error){
+
+        });
+
+    };
+
+
+  });
+
+
+
+   /* $scope.readUser=function(){
+
+    	var myDataPromise = myService.readU(); 
+  		 
+         alert(myDataPromise); 
+
+        // console.log("data.name"+$scope.data.name); 
+ 
+    }
+*/
+
+
+
+/*app.factory('myService', function($http) {
+
+    var readU = function() {
+
+         //alert("called");
+            data= {
+			  "jsonrpc": "2.0",
+			  "method": "query",
+			  "params": {
+			    "type": 1,
+			    "chaincodeID": {
+			      "name": "96b42e1e0be8ae3a9998fe84af3787daa9252ae8fb13a80fa31aa0c01a398ceaa73cb5c25246cb74572486a4af7e935f17168f1467361ceff6cd9394cd3051fa"
+			    },
+			    "ctorMsg": {
+			      "function": "readUser",
+			      "args": [
+			       $scope.users.Name
+			      ]
+			    },
+			    "secureContext": $scope.selectedUser.user_id
+			  },
+			  "id": 1
+			};
+        return $http({
+            method: "POST",
+            url: "https://2f5cb48838c14818b8f38c7bb6fdf964-vp0.us.blockchain.ibm.com:5002/registrar",
+            data: data,
+            headers: {'Content-Type': 'application/json'}
+            }).then(function(result){
+           //alert(JSON.stringify(data));
+               alert(JSON.stringify(result));
+                return result;
+        },function (error){
+        	return result;
+        });
+
+        return { readUser: readU };
+    }
+});*/
+  </script>
+</head>
+<body ng-app="myapp" ng-controller="mainController">
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">P2P Electricity Trading</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><button onclick="showhome();" class="btn btn-primary navbar-btn">Home</button></li>
+      <li>&emsp;</li>
+      <li><button onclick="showreg();" class="btn btn-primary navbar-btn">Initialize</button></li>
+      <li>&emsp;</li>
+      <li><button onclick="showtrade();"  class="btn btn-primary navbar-btn">Trade</button></li>
+      <li>&emsp;</li>
+       <li><button onclick="showAccount();"  class="btn btn-primary navbar-btn">Account</button></li>
+             <li>&emsp;</li>
+       <li><button onclick="showTradeManger();"  ng-click="getTradeManager()" class="btn btn-primary navbar-btn">Trade Manager</button></li>
+       <li>&emsp;</li>
+       <li><button onclick="showTransactionManager();" class="btn btn-primary navbar-btn">Transaction Manager</button></li>
+    </ul>
+  </div>
+</nav>
+ <div class="container">
+ 	<div class="row">
+ 		<div class="col-md-6">
+
+ 		<div class="col-md-12" id="HomeDiv" style="display: none;">
+ 	
+ 		  <div class="dropdown">
+ 		  <div class="dropdown">
+		    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Users
+		    <span class="caret"></span></button>
+		    <ul class="dropdown-menu" ng-model="secureContext" >
+		      <li><a href="#" ng-repeat="user in users" ng-click="selectUser(user)">{{user.user_id}}</a></li>
+		     
+		    </ul>
+		    {{selectedUser.user_id}}
+		  </div>
+		  <br/>
+ 		 	 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" ng-click="registerUser()">Register</button>
+		    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" ng-click="deployChain()">Deploy</button>
+		    <p> </p>
+		  </div>
+		  </div>
+
+ 		<div class="col-md-12" id="RegisterDiv" style="display: none;">
+ 	
+ 		  <div class="dropdown">
+		    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Users
+		    <span class="caret"></span></button>
+		    <ul class="dropdown-menu" ng-model="secureContext" >
+		      <li><a href="#" ng-repeat="user in users" ng-click="selectUser(user)">{{user.user_id}}</a></li>
+		     
+		    </ul>
+		    {{selectedUser.user_id}}
+		  </div>
+		  <br/>
+		 <form name="regform" class="form-horizontal">
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="pwd">Name:</label>
+		    <div class="col-sm-10"> 
+		      <input type="text" class="form-control"  ng-model="Name" placeholder="Enter Name">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="pwd">Balance:</label>
+		    <div class="col-sm-10"> 
+		      <input type="text" class="form-control" ng-model="Balance" placeholder="Enter Balance">
+		    </div>
+		  </div>
+		   <div class="form-group">
+		    <label class="control-label col-sm-2" for="pwd">Quantity:</label>
+		    <div class="col-sm-10"> 
+		      <input type="text" class="form-control" ng-model="Quantity" placeholder="Enter Quantity">
+		    </div>
+		  </div>
+		  <div class="form-group"> 
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <div class="checkbox">
+		        <label><input type="checkbox"> I agree the terms & conditions</label>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="form-group"> 
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default" ng-click="initializeUser()">Submit</button>
+		    </div>
+		  </div>
+		</form>
+		</div>
+		<!-- Closing of register DIV -->
+
+		<div class="col-md-12" id="TradeDiv"  style="display: none;">
+		<h3>Place Orders</h3>
+		<form name="tradeform"  class="form-horizontal">
+		   <div class="dropdown">
+ 		  <div class="dropdown">
+		    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Users
+		    <span class="caret"></span></button>
+		    <ul class="dropdown-menu" ng-model="secureContext" >
+		      <li><a href="#" ng-repeat="user in users" ng-click="selectUser(user)">{{user.user_id}}</a></li>
+		     
+		    </ul>
+		    {{selectedUser.user_id}}
+		  </div>
+		  </div>
+
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="email"  >Order Type:</label>
+		    <div class="col-sm-10">
+					      <div class="dropdown">
+			 		  <div class="dropdown">
+					    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select Type
+					    <span class="caret"></span></button>
+					    <ul class="dropdown-menu" ng-model="secureContext" >
+					      <li><a href="#" ng-repeat="order in ordertypes" ng-click="selectOrder(order)">{{order}}</a></li>  
+					    </ul>
+					   {{selected_order_type}}
+					  </div>
+					  <br/>
+					  </div>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="pwd" >Quantity (KWh):</label>
+		    <div class="col-sm-10"> 
+		      <input type="text" class="form-control" id="Quantity" ng-value="Qty_value" placeholder="Enter Quantity">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="pwd">Price/unit (₹):</label>
+		    <div class="col-sm-10"> 
+		      <input type="text" class="form-control" id="Quantity" ng-value="Price_value" placeholder="Enter Price">
+		    </div>
+		  </div>
+		  <div class="form-group"> 
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <div class="checkbox">
+		        <label><input type="checkbox"> I agree the terms & conditions</label>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="form-group"> 
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default" ng-click="placeOrder()">Submit</button>
+		    </div>
+		  </div>
+		</form>
+		</div>
+		<!-- Closing of trade DIV -->
+
+<div class="col-md-12" id="AccountDiv" style="display: none;">
+ 	
+ 		  <div class="dropdown">
+		    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Users
+		    <span class="caret"></span></button>
+		    <ul class="dropdown-menu" ng-model="secureContext" >
+		      <li><a href="#" ng-repeat="user in users" ng-click="selectUser(user)">{{user.user_id}}</a></li>
+		     
+		    </ul>
+		    {{selectedUser.user_id}}
+		  </div>
+		  <br/>
+		 <form name="regform" class="form-horizontal">
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="pwd">Name:</label>
+		    <div class="col-sm-10"> 
+		       <p> {{get_Name}}</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label class="control-label col-sm-2" for="pwd">Balance:</label>
+		    <div class="col-sm-10"> 
+		      <p  >{{get_Balance}}</p>
+		    </div>
+		  </div>
+		   <div class="form-group">
+		    <label class="control-label col-sm-2" >Quantity:</label>
+		    <div class="col-sm-10"> 
+		      <p  > {{get_Units}}</p>
+		    </div>
+		  </div>
+		  <div class="form-group"> 
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <div class="checkbox">
+		        <label><input type="checkbox"> I agree the terms & conditions</label>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="form-group"> 
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default" ng-click="readUser()">Get</button>
+		    </div>
+		  </div>
+		</form>
+		</div>
+
+ 		</div>
+ 	</div>
+ </div>
+
+<div id="TradeManagerDiv" style="display: none;">
+ <div class="col-md-6">
+ 	 <div class="row">
+        <div class="col-lg-12 col-sm-6" id="line-chart">
+          <div class="panel panel-default">
+            <div class="panel-heading">Line Chart</div>
+            <div class="panel-body">
+
+		<div id='myChart'></div>
+            </div>
+                        </div>
+
+          </div>
+ </div> </div> 
+            
+ 	 <div class="col-md-3" >
+			 	 <div class="row">
+			        <div class="col-lg-12" id="line-chart">
+			          <div class="panel panel-default">
+			            <div class="panel-heading"><b>Buyers Order Information</b></div>
+			            <div class="panel-body">
+			             <table class="table table-striped">
+			  <thead>
+			    <tr>
+			      <th>Buy Orders</th>
+			      <th>Quantity</th>
+			      <th>Price</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr  ng-repeat="buyer in buyers">
+			      <td>{{buyer.Name}}</td>
+			      <td>{{buyer.Units}}</td>
+			      <td>{{buyer.Price}}</td>
+			    </tr>
+			  </tbody>
+			</table>
+
+			            </div>
+			             </div>
+			             </div>
+			            </div>
+	 </div> 
+ <div class="col-md-3" >
+ 	 <div class="row">
+        <div class="col-lg-12" id="line-chart">
+          <div class="panel panel-default">
+            <div class="panel-heading"><b>Seller Tender Information</b></div>
+            <div class="panel-body">
+             <table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Sell Orders</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr  ng-repeat="seller in sellers">
+      <td>{{seller.Name}}</td>
+      <td>{{seller.Units}}</td>
+      <td>{{seller.Price}}</td>
+    </tr>
+  </tbody>
+</table>
+
+            </div>
+             </div>
+             </div>
+            </div>
+ </div> 
+ </div> 
+
+
+ <div id="TransactionManagerDiv" style="display: none;">
+ <div class="col-md-6">
+ 	 <div class="row">
+        <div class="col-lg-12 col-sm-6" id="line-chart">
+          <div class="panel panel-default">
+            <div class="panel-heading">Line Chart</div>
+            <div class="panel-body">
+
+	
+            </div>
+                        </div>
+
+          </div>
+ </div> </div> 
+            
+ 	 <div class="col-md-6" >
+			 	 <div class="row">
+			        <div class="col-lg-12" id="line-chart">
+			          <div class="panel panel-default">
+			            <div class="panel-heading"><b>Buyers Order Information</b></div>
+			            <div class="panel-body">
+			             <table class="table table-striped">
+			  <thead>
+			    <tr>
+			      <th>Buyer</th>
+			      <th>Seller</th>
+			      <th>Price Per Unit</th>
+			      <th>Quantity(KWh)</th>
+			      <th>Timestamp</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr  ng-repeat="transaction in transactions">
+			      <td>{{transaction.Buyer}}</td>
+			      <td>{{transaction.Seller}}</td>
+			      <td>{{transaction.PPU}}</td>
+			      <td>{{transaction.Qty}}</td>
+			      <td>{{transaction.Timestamp}}</td>
+			    </tr>
+			  </tbody>
+			</table>
+
+			            </div>
+			             </div>
+			             </div>
+			            </div>
+	 </div> 
+ </div> 
+ </div> 
+
+
+</body>
+</html>
