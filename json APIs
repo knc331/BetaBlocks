@@ -141,3 +141,24 @@ GET Transactions
 
 5abf7ab5f10da3b1e6c661fed083a27f33629cbc2c03bdb98373ed10fbb688d303ef3a4cc151ccb5639d267c4bff609573d4c795afceaf91d71c51e956d4b7a1
 
+
+
+
+{
+  "jsonrpc": "2.0",
+  "method": "query",
+  "params": {
+    "type": 1,
+    "chaincodeID": {
+      "name": "5abf7ab5f10da3b1e6c661fed083a27f33629cbc2c03bdb98373ed10fbb688d303ef3a4cc151ccb5639d267c4bff609573d4c795afceaf91d71c51e956d4b7a1"
+    },
+    "ctorMsg": {
+      "function": "readTradeManager",
+      "args": [
+	  "trademanager"
+      ]
+    },
+    "secureContext": "user_type1_0"
+  },
+  "id": 1
+}
